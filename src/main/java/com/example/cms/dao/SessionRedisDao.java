@@ -5,11 +5,12 @@ import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 
 public class SessionRedisDao extends EnterpriseCacheSessionDAO {
-    @Autowired
-    private RedisTemplate<String,Object> redisTemplate;
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     protected Serializable doCreate(Session session) {

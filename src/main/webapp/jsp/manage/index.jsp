@@ -181,7 +181,7 @@
 		<div class="content_main">
 			<div id="iframe_home" class="iframe cur">
 				<p><h4>通用用户权限管理系统</h4></p>
-				<p><b>演示地址</b>：<a href="http://www.zhangshuzheng.cn/zhengAdmin" target="_blank">http://www.zhangshuzheng.cn/zhengAdmin</a></p>
+				<p><b>演示地址</b>：<button id="a_test" value=".">http://www.zhangshuzheng.cn/zhengAdmin</button></p>
 				<p><b>系统简介</b>：本系统是基于RBAC授权和基于用户授权的细粒度权限控制通用平台，并提供单点登录、会话管理和日志管理。接入的系统可自由定义组织、角色、权限、资源等。</p><br/>
 				<p><h4>系统功能概述：</h4></p>
 				<p><b>系统组织管理</b>：系统和组织增加、删除、修改、查询功能。</p>
@@ -201,9 +201,7 @@
 	</section>
 </section>
 <footer id="footer"></footer>
-<script>var BASE_PATH = '${basePath}';
 
-</script>
 <script src="${basePath}/resources/zheng-admin/plugins/jquery.1.12.4.min.js"></script>
 <script src="${basePath}/resources/zheng-admin/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
 <script src="${basePath}/resources/zheng-admin/plugins/waves-0.7.5/waves.min.js"></script>
@@ -214,5 +212,27 @@
 <script src="${basePath}/resources/zheng-admin/js/admin.js"></script>
 <script src="${basePath}/resources/zheng-admin/plugins/fullPage/jquery.fullPage.min.js"></script>
 <script src="${basePath}/resources/zheng-admin/plugins/fullPage/jquery.jdirk.min.js"></script>
+<script>var BASE_PATH = '${basePath}';
+$(document).ready(function(){
+    $("#a_test").click(function (){
+        $.ajax({
+            url: '/test',
+            type: 'GET',
+            beforeSend: function() {
+
+            },
+            success: function(json){
+                alert(1);
+                $("#a_test").text(json);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    });
+});
+
+</script>
+
 </body>
 </html>
