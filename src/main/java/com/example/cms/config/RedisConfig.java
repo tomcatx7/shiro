@@ -13,29 +13,36 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
-public class RedisConfig {
+public class RedisConfig
+{
     @Autowired
     RedisConnectionFactory redisConnectionFactory;
 
     @Bean
-    public RedisTemplate getRedisTemplate(){
+    public RedisTemplate getRedisTemplate()
+    {
         RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
-        initDomainRedisTemplate(redisTemplate,redisConnectionFactory);
+        initDomainRedisTemplate( redisTemplate, redisConnectionFactory );
         return redisTemplate;
     }
 
-    private void initDomainRedisTemplate(RedisTemplate redisTemplate, RedisConnectionFactory factory){
-        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+    private void initDomainRedisTemplate( RedisTemplate redisTemplate,
+            RedisConnectionFactory factory )
+    {
+        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(
+                Object.class );
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-        jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
+        objectMapper.setVisibility( PropertyAccessor.ALL,
+                JsonAutoDetect.Visibility.ANY );
+        objectMapper
+                .enableDefaultTyping( ObjectMapper.DefaultTyping.NON_FINAL );
+        jackson2JsonRedisSerializer.setObjectMapper( objectMapper );
 
         // 设置value的序列化规则和 key的序列化规则
-        redisTemplate.setKeySerializer(jackson2JsonRedisSerializer);
-        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
-        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
-        redisTemplate.setConnectionFactory(factory);
+        redisTemplate.setKeySerializer( new StringRedisSerializer() );
+        redisTemplate.setValueSerializer( jackson2JsonRedisSerializer );
+        redisTemplate.setHashValueSerializer( jackson2JsonRedisSerializer );
+        redisTemplate.setHashKeySerializer( new StringRedisSerializer() );
+        redisTemplate.setConnectionFactory( factory );
     }
 }

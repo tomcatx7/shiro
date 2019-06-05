@@ -5,6 +5,8 @@ import com.example.cms.domain.Permission;
 import com.example.cms.domain.User;
 import com.example.cms.service.PermissionService;
 import com.example.cms.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ import java.util.List;
 public class PageController
 {
 
+    private static final Logger logger = LogManager.getLogger( PageController.class );
+
     @Autowired
     public UserService userService;
 
@@ -35,9 +39,22 @@ public class PageController
 
     @GetMapping("/test")
     @ResponseBody
-    public int test()
+    public String test()
     {
-        return 1;
+        String num = redisTemplate.opsForValue().get( "product" );
+
+        if( Integer.valueOf( num ) < 0 )
+        {
+            logger.info( "query num :"+num );
+            return "fail :"+num;
+        }
+        Long num1 = redisTemplate.opsForValue().decrement( "product" );
+        if( num1 < 0 )
+        {
+            logger.info( "decr num :"+num1 );
+            return "fail :"+num1;
+        }
+        return "sucesse :"+num1;
     }
 
     @GetMapping("/index")
@@ -52,6 +69,7 @@ public class PageController
         mv.addObject( "upmsUser", upmsUser );
         List<Permission> upmsPermissions = permissionService.getAllPermission();
         mv.addObject( "upmsPermissions", upmsPermissions );
+
         return mv;
     }
 

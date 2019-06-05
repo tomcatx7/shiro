@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.servlet.Filter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Configuration
 public class ShiroConfig
@@ -38,7 +39,6 @@ public class ShiroConfig
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setGlobalSessionTimeout( 60000 ); //1min
         sessionManager.setDeleteInvalidSessions( true );
-
         sessionManager.setSessionDAO( sessionRedisDao() );
         sessionManager.setSessionValidationSchedulerEnabled( true );
         sessionManager.setDeleteInvalidSessions( true );
@@ -65,6 +65,7 @@ public class ShiroConfig
         filterMap.put( "/jsp/**", "authc" );
         filterMap.put( "/resources/**", "anon" );
         filterMap.put( "/error", "anon" );
+        filterMap.put( "/test", "anon" );
         filterMap.put( "/**", "authc" );
         filterMap.put( "/sso/doLogin", "anon" );
         //filterMap.put("/**","user");
